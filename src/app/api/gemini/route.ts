@@ -8,7 +8,6 @@ const ai = new GoogleGenAI({
 
 export async function POST(req: Request) {
   try {
-    console.log("hoas "+ req)
     const {mesage} = await req.json();
     console.log(mesage);
     const response = await ai.models.generateContent({

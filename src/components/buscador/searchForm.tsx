@@ -1,10 +1,12 @@
-'use-client'
+"use-client";
 import { FormEvent } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
-
-const SearchForm = () => {
+type SearchFormProps = {
+    setRespondido: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const SearchForm = ({setRespondido}:{setRespondido: React.Dispatch<React.SetStateAction<boolean>>}) => {
     const handlerSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -15,8 +17,9 @@ const SearchForm = () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ mesage }),
             });
-            console.log("holassasa")
-            console.log(res.text);
+            const data = await res.json();
+            setRespondido(true);
+            console.log(data.text);
         } catch (error) {
             console.log(error);
         }
@@ -38,4 +41,4 @@ const SearchForm = () => {
     );
 };
 
-export {SearchForm};
+export { SearchForm };
