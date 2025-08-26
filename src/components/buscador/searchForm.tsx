@@ -25,16 +25,25 @@ const SearchForm = ({setRespondido}:{setRespondido: React.Dispatch<React.SetStat
         }
     };
     return (
-        <div className=" p-6 rounded-2xl max-w-sm mx-auto">
-            <div className="text-8xl text-white">
-                <h1> VALIDADOR DE NOTICIAS </h1>
-            </div>
+        <div className="p-6 rounded-2xl w-full max-w-5xl mx-auto">
             <form onSubmit={handlerSubmit} className="p-6">
                 <div className="grid gap-3">
-                    <Input name="mensage" className="bg-white" />
-                    <Button type="submit" variant="default">
-                        Submit
-                    </Button>
+                    <div className="relative">
+                        <Input
+                            name="mensage"
+                            className="w-full h-10 bg-[#23253A] border border-[#7B8AFF] text-white pl-4 pr-4 py-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7B8AFF] placeholder:text-[#7B8AFF] text-lg"
+                            placeholder="Escribe tu noticia..."
+                        />
+                    </div>
+                    <div className="flex justify-center mt-4">
+                        <Button
+                            type="submit"
+                            variant="default"
+                            className="bg-gradient-to-r from-[#54B7A1] to-[#7B8AFF] hover:from-[#429c87] hover:to-[#5a6eea] text-white text-base px-8 py-3 rounded-xl font-bold shadow-lg transition-all duration-200 flex items-center gap-2"
+                        >
+                            <span className="tracking-wide drop-shadow"> Evaluar noticia</span>
+                        </Button>
+                    </div>
                 </div>
             </form>
         </div>
