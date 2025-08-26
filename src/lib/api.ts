@@ -9,7 +9,8 @@ const getGemini=async (noticia:string)=>{
         model: "gemini-2.5-flash",
         contents: " dime si lo que te voy a decir es una notica falsa o no " +noticia,
     });
-    console.log(response.text);
+    const text:string = response.text??"";
+    console.log(text);
     return response.text;
 };
 
