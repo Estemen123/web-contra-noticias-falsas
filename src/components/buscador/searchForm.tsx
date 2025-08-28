@@ -4,9 +4,10 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
 type SearchFormProps = {
-    setRespondido: React.Dispatch<React.SetStateAction<boolean>>;
+    setRespondido: React.Dispatch<React.SetStateAction<boolean>>,
+    setResultado: React.Dispatch<React.SetStateAction<string>>,
 }
-const SearchForm = ({setRespondido}:{setRespondido: React.Dispatch<React.SetStateAction<boolean>>}) => {
+const SearchForm = ({setRespondido, setResultado}:SearchFormProps) => {
     const handlerSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -19,13 +20,13 @@ const SearchForm = ({setRespondido}:{setRespondido: React.Dispatch<React.SetStat
             });
             const data = await res.json();
             setRespondido(true);
-            console.log(data.text);
+            console.log(data)
         } catch (error) {
             console.log(error);
         }
     };
     return (
-        <div className=" p-6 rounded-2xl max-w-sm mx-auto">
+        <div className=" p-2 rounded-2xl max-w-sm mx-auto">
             <div className="text-8xl text-white">
                 <h1> VALIDADOR DE NOTICIAS </h1>
             </div>

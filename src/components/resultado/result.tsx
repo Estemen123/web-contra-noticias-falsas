@@ -8,9 +8,16 @@ import {
     CardTitle,
 } from "../ui/card";
 
-const Result = () => {
+type ResultProps ={
+    content : string,
+    title: string,
+    scores: number,
+    urls: string| null,
+}
+const Result = ({content,title,scores,urls}:ResultProps) => {
+
     return (
-        <div>
+        <div className="grid">
             <Record/>
             <Card>
                 <CardHeader>
@@ -19,7 +26,7 @@ const Result = () => {
                     <CardAction>Card Action</CardAction>
                 </CardHeader>
                 <CardContent>
-                    <p>Card Content</p>
+                    <p>{content}</p>
                 </CardContent>
                 <CardFooter>
                     <p>Card Footer</p>
