@@ -1,12 +1,21 @@
 "use-client";
-import { FormEvent } from "react";
+import { FormEvent , useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import dynamic from "next/dynamic";
+const ControlVoz = dynamic(() => import("@/components/voz/voz"), { ssr: false });
+
+
+
+
 
 type SearchFormProps = {
     setRespondido: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const SearchForm = ({setRespondido}:{setRespondido: React.Dispatch<React.SetStateAction<boolean>>}) => {
+const [value, setValue] = useState("");
+  const [listening, setListening] = useState(false);
+    
     const handlerSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -31,8 +40,18 @@ const SearchForm = ({setRespondido}:{setRespondido: React.Dispatch<React.SetStat
                     <div className="relative">
                         <Input
                             name="mensage"
-                            className="w-full h-10 bg-[#23253A] border border-[#7B8AFF] text-white pl-4 pr-4 py-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7B8AFF] placeholder:text-[#7B8AFF] text-lg"
+                            className="w-full h-10 bg-[#23253A] border border-[#7B8AFF] text-white pl-4 pr-4 py-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7B8AFF] placeholder:text-[#7B8AFF] text-lg "
                             placeholder="Escribe tu noticia..."
+                            value={value}
+                            onChange={(e) => setValue(e.target.value)}
+                            
+                        />
+                        <ControlVoz
+                            language="es-ES"
+                            continuous
+                            onTranscriptChange={setValue}
+                            onListeningChange={setListening}
+                            className="absolute  right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring"
                         />
                     </div>
                     <div className="flex justify-center mt-4">
