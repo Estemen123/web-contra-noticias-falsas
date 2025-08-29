@@ -1,5 +1,5 @@
 import { validateNewsResult } from "@/lib/validators";
-import { FormEvent, SetStateAction } from "react";
+import { FormEvent, SetStateAction, useState } from "react";
 
 type SearchFormProps = {
     setRespondido: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,12 +13,14 @@ type SearchFormProps = {
     >;
 };
 const useSearchForm = ({ setRespondido, setResultData }: SearchFormProps) => {
+    const [urlInput, setUrlInput] = useState(true);
     const handlerSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-        const mesage: string = String(formData.get("mensage")) ?? "";
+        const mesage: string = urlInput? String(formData.get("url")) ?? "":String(formData.get("texto")) ?? "";
+        const direction:string = urlInput?"/api/gemini/url":"/api/gemini/text";
         try {
-            const res = await fetch("/api/gemini", {
+            const res = await fetch(direction, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ mesage }),
@@ -33,7 +35,7 @@ const useSearchForm = ({ setRespondido, setResultData }: SearchFormProps) => {
             console.log(error);
         }
     };
-    return { handlerSubmit };
+    return { handlerSubmit, urlInput, setUrlInput };
 };
 
 export { useSearchForm };
