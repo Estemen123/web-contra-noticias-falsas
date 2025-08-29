@@ -14,6 +14,12 @@ const ResultCard = ({ resultData }: ResultCardProps) => {
         argument: resultData.argument,
     });
 
+    const referenceLinks = [
+        "https://www.ejemplo.com/noticia-fuente-1",
+        "https://www.ejemplo.com/verificacion-2",
+        "https://www.ejemplo.com/contexto-adicional-3",
+    ];
+
     const isLowVeracity = resultData.veracity <= 50;
     const textColorClass = isLowVeracity ? "text-red-500" : "text-[#54B7A1]";
     const strokeColor = isLowVeracity ? "#EF4444" : "#54B7A1";
@@ -70,6 +76,38 @@ const ResultCard = ({ resultData }: ResultCardProps) => {
                             Argumento:
                         </p>
                         <p className="text-gray-300">{resultData.argument}</p>
+                    </div>
+                    <div>
+                        <p className="font-semibold text-gray-400 mb-2">
+                            Fuentes de referencia:
+                        </p>
+                        <ul className="space-y-2">
+                            {referenceLinks.map((link, index) => (
+                                <li key={index} className="flex items-center">
+                                    <a
+                                        href={link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-[#7B8AFF] hover:underline text-sm flex items-center gap-1.5 transition-colors"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="14"
+                                            height="14"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        >
+                                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path>
+                                        </svg>
+                                        <span>{new URL(link).hostname}</span>
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
 
