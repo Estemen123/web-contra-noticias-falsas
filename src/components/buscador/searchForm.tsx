@@ -21,14 +21,18 @@ type SearchFormProps = {
     >;
 };
 const SearchForm = ({ setRespondido, setResultData }: SearchFormProps) => {
-    const [value, setValue] = useState("");
+    const [inputValue, setInputValue] = useState("");
     const [listening, setListening] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const { handlerSubmit, urlInput, setUrlInput } = useSearchForm({
         setRespondido,
         setResultData,
     });
-    
+
+    const handleTabChange = (isUrl: boolean) => {
+        setUrlInput(isUrl);
+        setInputValue(""); // Limpia el input al cambiar de pestaña
+    };
 
     const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -36,7 +40,10 @@ const SearchForm = ({ setRespondido, setResultData }: SearchFormProps) => {
 
         setIsLoading(true);
         try {
-            await handlerSubmit(e);
+            const success = await handlerSubmit(e);
+            if (success) {
+                setInputValue(""); // Limpia el input si la evaluación fue exitosa
+            }
         } finally {
             setIsLoading(false);
         }
@@ -47,10 +54,10 @@ const SearchForm = ({ setRespondido, setResultData }: SearchFormProps) => {
             <form onSubmit={handleFormSubmit} className="p-6">
                 <div className="grid gap-3">
                     <div>
-                        <Button type="button" onClick={() => setUrlInput(true)} className="">
+                        <Button type="button" onClick={() => handleTabChange(true)} className="">
                             URL
                         </Button>
-                        <Button type="button" onClick={() => setUrlInput(false)} className="" >
+                        <Button type="button" onClick={() => handleTabChange(false)} className="" >
                             TEXTO
                         </Button>
                     </div>
@@ -58,6 +65,8 @@ const SearchForm = ({ setRespondido, setResultData }: SearchFormProps) => {
                         <div className="relative">
                             <Input
                                 name="url"
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
                                 className="w-full h-10 bg-[#23253A] border border-[#7B8AFF] text-white pl-4 pr-4 py-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7B8AFF] placeholder:text-[#7B8AFF] text-lg "
                                 placeholder="Escribe el link de tu noticia..."
                             />
@@ -66,16 +75,16 @@ const SearchForm = ({ setRespondido, setResultData }: SearchFormProps) => {
                         <div className="relative">
                             <Textarea
                                 name="texto"
-                                value={value}
+                                value={inputValue}
                                 className="resize-none  bg-[#23253A] border border-[#7B8AFF] text-white pl-4 pr-4 py-6 rounded-lg   placeholder:text-[#7B8AFF] text-lg "
-                                onChange={(e) => setValue(e.target.value)}
+                                onChange={(e) => setInputValue(e.target.value)}
                                 placeholder="Escribe tu noticia ..."
                             ></Textarea>
 
                             <ControlVoz
                                 language="es-ES"
                                 continuous
-                                onTranscriptChange={setValue}
+                                onTranscriptChange={setInputValue}
                                 onListeningChange={setListening}
                                 className="absolute  right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring"
                             />
