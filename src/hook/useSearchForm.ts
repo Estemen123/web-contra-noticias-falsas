@@ -1,4 +1,5 @@
 import { validateNewsResult } from "@/lib/validators";
+import { useVideoResultState } from "@/store/signsStore";
 import { FormEvent, SetStateAction, useState } from "react";
 
 type SearchFormProps = {
@@ -14,6 +15,7 @@ type SearchFormProps = {
 };
 const useSearchForm = ({ setRespondido, setResultData }: SearchFormProps) => {
     const [urlInput, setUrlInput] = useState(true);
+    const {setvideo} = useVideoResultState()
     const handlerSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -29,6 +31,7 @@ const useSearchForm = ({ setRespondido, setResultData }: SearchFormProps) => {
             if (validateNewsResult(data)) {
                 setRespondido(true);
                 setResultData(data);
+                setvideo(data.veracity);
             } else setRespondido(false);
         } catch (error) {
             setRespondido(false);

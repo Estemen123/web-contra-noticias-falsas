@@ -1,47 +1,64 @@
 "use client";
 
+import { useSignsStore, useVideoElemtStore, useVideoResultState } from "@/store/signsStore";
 import { useEffect, useRef } from "react";
 
 type PropsVideoModal = {
-    open: boolean;
-    onClose: () => void;
     srcVideo: number;
     srcWeb: string;
-    poster?: string;
     title?: string;
-    level: 1|2|3|4|5;
+    className?: string; 
      
 }
-const colors = ["red", "orange", "yellow", "green", "blue"];
-const fuenteVideo = [
-    "/videos/theNewIsTrue.mp4",
-    "/videos/theNewsIsFake.mp4",
-
-
+const color = new Map<number, string>([
+    [0, "bg-red-600"],
+  [25, "bg-orange-500"],
+  [50, "bg-amber-400"],
+  [75, "bg-lime-500"],
+  [100, "bg-green-600"],
+  ]);
+  const fuenteVideo = [
+    "/videos/yourToolToVerifyNewsInSeconds.mp4",
+    "/videos/writeTheLinkToYourNews.mp4",
+    "/videos/writeYourNews.mp4",
+    "/videos/evaluateTheNews.mp4",
+    "/videos/evaluatingNews.mp4"
 ];
 
+const VideosResult = new Map<number, string>([
+  [0, "/videos/theNewsIsFake.mp4"],
+  [25, "/videos/TheNewsHasVeryLowCredibility.mp4"],
+  [50, "/videos/TheNewsIsUncertainDoubtful.mp4"],
+  [75, "/videos/TheNewsIsPartiallyReliable.mp4"],
+  [100, "/videos/theNewIsTrue.mp4"],
+]);
+
+
 export default function VideoModal({
-    open, onClose, srcVideo, srcWeb, poster,level, title = "BSL-Result"
+     srcVideo, srcWeb,className, title = "BSL-Result"
 }: PropsVideoModal) {
 
+    const {open} = useSignsStore()
+    const {setOpen} = useSignsStore()
+    const videoElemet    = useVideoElemtStore(s => s.video)
+    const videoResult    = useVideoResultState(s => s.video)
     const videoRef = useRef<HTMLVideoElement | null>(null);
 
+
     useEffect(() => {
-  const v = videoRef.current;
-  if (!v) return;
+        const v = videoRef.current;
+        if (!v) return;
 
-  // Validar índice
-  const url = fuenteVideo[srcVideo] ?? null;
-  if (!url) return;
+        // Validar índice
+        //const url = VideosResult.get(video) ?? null;
+        //if (!url) return;
 
-  // Forzar recarga de fuentes
-  v.pause();
-  v.currentTime = 0;
-  v.load();
-  // autoplay con políticas modernas -> muted
-  v.muted = true;
-  v.play().catch(() => {/* ignore */});
-}, [srcVideo]);
+        v.pause();
+        v.currentTime = 0;
+        v.load();
+        v.muted = true;
+        v.play().catch(() => {/* ignore */});
+    }, [videoElemet]);
 
     useEffect(() => {
         const v = videoRef.current;
@@ -62,19 +79,12 @@ export default function VideoModal({
 
     return (
                 
-            <div
-                
-                style={{
-                    padding: "10px",
-                    width: "min(200px, 100%)",
-                    background: colors[level],
-                    borderRadius: 8,
-                    overflow: "hidden",
-                    position: "relative",
-                }}
+            <div className={`${className ?? ""} ${
+                videoElemet === 0 ? (color.get(videoResult) ?? ""): "bg-blue-950"
+            }`}
             >
                 <button
-                    onClick={onClose}
+                    onClick={()=>{setOpen(false)}}
                     aria-label="Cerrar"
                     style={{
                         position: "absolute",
@@ -93,15 +103,15 @@ export default function VideoModal({
                 </button>
                 <video
                     ref={videoRef}
-                    poster={poster}
                     // Para que autoplay funcione en móvil:
                     muted
                     playsInline
                     preload="metadata"
-                    style={{ width: "200px", height: "auto", display: "block" }}
+                    style={{ width: "800px", height: "auto", display: "block" }}
                 >
                     {srcWeb && <source src={srcWeb} type="video/webm" />}
-                    <source src={fuenteVideo[srcVideo]} type="video/mp4" />
+                    <source src={videoElemet === 0 ? VideosResult.get(videoResult) : fuenteVideo[videoElemet - 1]} 
+                    type="video/mp4" />
                     Tu navegador no soporta el elemento video.
                 </video>
             </div>

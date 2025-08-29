@@ -95,24 +95,6 @@ const ResultCard = ({ resultData }: ResultCardProps) => {
                         className="object-contain"
                     />
                 </button>
-                <button
-                    className="text-[#B6C8D9] flex items-center"
-                    aria-label="Ver explicación en lengua de señas"
-                    tabIndex={0}
-                    onClick={() => {
-                        document
-                            .getElementById("video-card")
-                            ?.classList.remove("hidden");
-                    }}
-                >
-                    <img
-                        src="/hand-gestures.png"
-                        alt="Ver explicación en lengua de señas"
-                        width={32}
-                        height={32}
-                        className="object-contain"
-                    />
-                </button>
             </div>
         </div>
     );

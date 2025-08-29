@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import dynamic from "next/dynamic";
 import { useSearchForm } from "@/hook/useSearchForm";
 import { Textarea } from "../ui/textarea";
+import { useVideoElemtStore } from "@/store/signsStore";
 const ControlVoz = dynamic(() => import("@/components/voz/voz"), {
     ssr: false,
 });
@@ -29,6 +30,8 @@ const SearchForm = ({ setRespondido, setResultData }: SearchFormProps) => {
         setResultData,
     });
     
+        const {video} = useVideoElemtStore()
+        const {setvideo} = useVideoElemtStore()
 
     const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -43,20 +46,20 @@ const SearchForm = ({ setRespondido, setResultData }: SearchFormProps) => {
     };
 
     return (
-        <div className="p-6 rounded-2xl w-full max-w-5xl mx-auto">
+        <div className="p-6 rounded-2xl w-full max-w-5xl mx-auto" >
             <form onSubmit={handleFormSubmit} className="p-6">
                 <div className="grid gap-3">
                     <div>
-                        <Button type="button" onClick={() => setUrlInput(true)} className="">
+                        <Button type="button" onClick={() => setUrlInput(true)} className="" onMouseEnter={() =>{ if (video !== 2) setvideo(2);}}>
                             URL
                         </Button>
-                        <Button type="button" onClick={() => setUrlInput(false)} className="" >
+                        <Button type="button" onClick={() => setUrlInput(false)} className="" onMouseEnter={() =>{ if (video !== 3) setvideo(3);}}>
                             TEXTO
                         </Button>
                     </div>
                     {urlInput ? (
                         <div className="relative">
-                            <Input
+                            <Input onMouseEnter={() =>{ if (video !== 2) setvideo(2);}}
                                 name="url"
                                 className="w-full h-10 bg-[#23253A] border border-[#7B8AFF] text-white pl-4 pr-4 py-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7B8AFF] placeholder:text-[#7B8AFF] text-lg "
                                 placeholder="Escribe el link de tu noticia..."
@@ -64,7 +67,7 @@ const SearchForm = ({ setRespondido, setResultData }: SearchFormProps) => {
                         </div>
                     ) : (
                         <div className="relative">
-                            <Textarea
+                            <Textarea onMouseEnter={() =>{ if (video !== 3) setvideo(3);}}
                                 name="texto"
                                 value={value}
                                 className="resize-none  bg-[#23253A] border border-[#7B8AFF] text-white pl-4 pr-4 py-6 rounded-lg   placeholder:text-[#7B8AFF] text-lg "
@@ -94,10 +97,10 @@ const SearchForm = ({ setRespondido, setResultData }: SearchFormProps) => {
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
-                                    <span>Evaluando...</span>
+                                    <span onMouseEnter={() =>{ if (video !== 5) setvideo(5);}}>Evaluando...</span>
                                 </>
                             ) : (
-                                <span className="tracking-wide drop-shadow">
+                                <span className="tracking-wide drop-shadow" onMouseEnter={() =>{ if (video !== 4) setvideo(4);}}>
                                     Evaluar noticia
                                 </span>
                             )}
