@@ -5,7 +5,7 @@ const useHOmePage = () => {
     const [resultData, setResultData] = useState<{
         title: string;
         summary: string;
-        veracity: string;
+        veracity: number;
         argument: string;
     } | null>(null);
     const [resultValid, setResultValid] = useState(false);

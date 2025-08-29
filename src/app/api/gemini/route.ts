@@ -39,9 +39,9 @@ export async function POST(req: Request) {
         console.log(articleText);
         const esta = await geminiRequest(thePrompt + articleText);
         const dataString = await esta.json();
+        console.log(dataString);
         const data = JSON.parse(dataString.text);
         console.log(dataString);
-        console.log(data);
         return NextResponse.json(data);
     } catch (err) {
         console.error(err);

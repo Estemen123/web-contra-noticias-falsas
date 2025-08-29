@@ -1,11 +1,11 @@
 import React from "react";
 
 const VeracidadCard = ({
-    veracidad = 80,
-    votos = 80,
+    veracidad ,
+    votos ,
 }: {
-    veracidad?: number;
-    votos?: number;
+    veracidad: number;
+    votos: number;
 }) => (
     <div className="bg-[#23253A] rounded-xl w-[170px] h-[220px] flex flex-col justify-center items-center shadow">
         <div className="flex flex-col justify-center items-center h-full">

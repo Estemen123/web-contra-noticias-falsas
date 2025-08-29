@@ -1,26 +1,29 @@
 import React, { useRef, useState } from "react";
 import VeracidadCard from "./VeracidadCard";
-import { Button } from "@/components/ui/button"; 
 import { ResultCard } from "./resultCard";
 
-const Result = ({
-    veracidad = 80,
-    votos = 80,
-    resultado = "ES VERDADERO",
-    explicacion = "La noticia es verdadera porque se encontro informacion relacionada en línea y en distintos portales web",
-}: {
-    veracidad?: number;
-    votos?: number;
-    resultado?: string;
-    explicacion?: string;
-}) => {
- 
-
+type ResultProps = {
+    resultData: {
+        title: string;
+        summary: string;
+        veracity: number;
+        argument: string;
+    } | null;
+};
+const Result = ({ resultData }: ResultProps) => {
     return (
         <div className="flex justify-center items-start mt-8">
             <div className="flex gap-12 w-full max-w-[90vw]">
-                <VeracidadCard veracidad={veracidad} votos={votos} />
-                <ResultCard argument="holas" resultado="es verdadero"/>
+                {resultData && (
+                    <>
+                        <VeracidadCard
+                            veracidad={resultData.veracity}
+                            votos={resultData.veracity}
+                        />
+                        <ResultCard resultData={resultData} />
+                    </>
+                )}
+
                 {/* Para el resultado y explicación */}
                 {/* Para el video */}
                 <div
@@ -35,6 +38,5 @@ const Result = ({
         </div>
     );
 };
-
 
 export { Result };

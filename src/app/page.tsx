@@ -6,21 +6,22 @@ import { useHOmePage } from "@/hook/useHomePage";
 import { FormEvent, useState } from "react";
 
 export default function Home() {
-    const{resultValid,setResultValid}= useHOmePage();
-    return (<div>
-      <div className="flex flex-col items-center mt-20 mb-10">
+    const { resultValid, setResultValid, setResultData, resultData } =
+        useHOmePage();
+    return (
+        <div>
+            <div className="flex flex-col items-center mt-20 mb-10">
                 <h1 className="text-white text-7xl font-extrabold tracking-tight drop-shadow-lg text-center bg-gradient-to-r from-[#54B7A1] via-[#7B8AFF] to-[#23253A] bg-clip-text text-transparent">
                     Verifica<span className="text-[#7B8AFF]">Ya</span>
                 </h1>
                 <div className="mt-4 text-[#B6C8D9] text-xl font-medium text-center">
                     Tu herramienta para verificar noticias en segundos
                 </div>
-      </div>
-        <SearchForm setRespondido={setResultValid} />
-        {resultValid && <Result/>}
-        {/* <Result/> */}
-      {/* {respodido?<Result></Result>:<SearchForm setRespondido={setRespondido}/>} */}
-    </div>
-        
+            </div>
+            <SearchForm setRespondido={setResultValid} setResultData={setResultData}/>
+            {resultValid && <Result resultData={resultData}/>}
+            {/* <Result/> */}
+            {/* {respodido?<Result></Result>:<SearchForm setRespondido={setRespondido}/>} */}
+        </div>
     );
 }

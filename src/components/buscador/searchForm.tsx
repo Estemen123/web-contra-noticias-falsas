@@ -1,5 +1,5 @@
 "use-client";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import dynamic from "next/dynamic";
@@ -10,15 +10,19 @@ const ControlVoz = dynamic(() => import("@/components/voz/voz"), {
 
 type SearchFormProps = {
     setRespondido: React.Dispatch<React.SetStateAction<boolean>>;
+    setResultData: React.Dispatch<SetStateAction<{
+    title: string;
+    summary: string;
+    veracity: number;
+    argument: string;
+} | null>>
 };
 const SearchForm = ({
-    setRespondido,
-}: {
-    setRespondido: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+    setRespondido,setResultData
+}: SearchFormProps) => {
     const [value, setValue] = useState("");
     const [listening, setListening] = useState(false);
-    const {handlerSubmit} = useSearchForm({setRespondido});
+    const {handlerSubmit} = useSearchForm({setRespondido,setResultData});
 
     return (
         <div className="p-6 rounded-2xl w-full max-w-5xl mx-auto">
