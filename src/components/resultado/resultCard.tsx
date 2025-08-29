@@ -1,4 +1,3 @@
-import { Button } from "../ui/button";
 import { useResultCard } from "@/hook/useResultCard";
 
 type ResultCardProps = {
@@ -11,20 +10,20 @@ type ResultCardProps = {
 };
 
 const ResultCard = ({ resultData }: ResultCardProps) => {
-    const resultado = {};
     const { handleSpeak, leyendo, veracityText } = useResultCard({
         argument: resultData.argument,
     });
-    const links = [
-        "https://cnnespanol.cnn.com/2025/08/27/latinoamerica/argentina-busca-cuadro-nazi-ap",
-        "https://cnnespanol.cnn.com/2025/08/27/latinoamerica/argentina-busca-cuadro-nazi-ap",
-        "https://cnnespanol.cnn.com/2025/08/27/latinoamerica/argentina-busca-cuadro-nazi-ap",
-        "https://cnnespanol.cnn.com/2025/08/27/latinoamerica/argentina-busca-cuadro-nazi-ap"
-    ];
+
+    const isLowVeracity = resultData.veracity <= 50;
+    const textColorClass = isLowVeracity ? "text-red-500" : "text-[#54B7A1]";
+    const strokeColor = isLowVeracity ? "#EF4444" : "#54B7A1";
+
     return (
         <div className="flex-1 rounded-xl overflow-hidden">
             <div className="bg-[#2A3143] px-6 py-2 flex items-center justify-between">
-                <span className="text-[#54B7A1] font-semibold text-lg flex items-center gap-2">
+                <span
+                    className={`${textColorClass} font-semibold text-lg flex items-center gap-2`}
+                >
                     <svg
                         width="20"
                         height="20"
@@ -36,45 +35,42 @@ const ResultCard = ({ resultData }: ResultCardProps) => {
                             cx="12"
                             cy="12"
                             r="10"
-                            stroke="#54B7A1"
+                            stroke={strokeColor}
                             strokeWidth="2"
                         />
                         <path
                             d="M8 12l2 2 4-4"
-                            stroke="#54B7A1"
+                            stroke={strokeColor}
                             strokeWidth="2"
                             fill="none"
                         />
                     </svg>
                     {veracityText(resultData.veracity)}
                 </span>
-                <Button
-                    className="text-[#B6C8D9] flex items-center gap-2 text-base font-medium bg-transparent hover:bg-[#23253A] px-3 py-1"
-                    type="button"
-                    aria-label="Revaluar resultado"
-                >
-                    <img
-                        src="/actualizar.png"
-                        alt="Actualizar resultado"
-                        width={20}
-                        height={20}
-                        className="object-contain"
-                    />
-                    Revaluar
-                </Button>
             </div>
             <div
                 className="bg-[#23253A] px-6 py-4 text-white text-sm min-h-[110px]"
                 aria-live="polite"
                 role="region"
             >
-                {/* aqui hay que colocar toda la data  */}
-                <div className="p-5">
-                    <h2>{resultData.title}</h2>
-                    <p>resumen de la noticia:</p>
-                    <p>{resultData.summary}</p>
-                    <p>argumento: </p>
-                    <p>{resultData.argument}</p>
+                <div className="p-5 space-y-4">
+                    <div>
+                        <h2 className="font-bold text-lg mb-1">
+                            {resultData.title}
+                        </h2>
+                    </div>
+                    <div>
+                        <p className="font-semibold text-gray-400 mb-1">
+                            Resumen de la noticia:
+                        </p>
+                        <p className="text-gray-300">{resultData.summary}</p>
+                    </div>
+                    <div>
+                        <p className="font-semibold text-gray-400 mb-1">
+                            Argumento:
+                        </p>
+                        <p className="text-gray-300">{resultData.argument}</p>
+                    </div>
                 </div>
 
                 {leyendo && (
