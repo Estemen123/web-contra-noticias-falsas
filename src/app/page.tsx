@@ -30,7 +30,7 @@ export default function Home() {
             {/* {respodido?<Result></Result>:<SearchForm setRespondido={setRespondido}/>} */}
             {!open && (
                 <button
-                        className="absolute right-4 top-20 -translate-y-1/2 z-10 text-[#B6C8D9] flex items-center"
+                        className="fixed right-4 top-20 z-50 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-lg flex items-center justify-center transition"
                         aria-label="Ver explicación en lengua de señas"
                         tabIndex={0}
                         onClick={
@@ -40,8 +40,8 @@ export default function Home() {
                         <img
                             src="/hand-gestures.png"
                             alt="Ver explicación en lengua de señas"
-                            width={32}
-                            height={32}
+                            width={40}
+                            height={40}
                             className="object-contain"
                         />
                 </button>
@@ -50,7 +50,7 @@ export default function Home() {
             <VideoModal
                     srcVideo={video}
                     srcWeb=""
-                    className="absolute right-4 top-20 rounded-xl p-2 w-[200px] flex items-center justify-center"
+                    className="fixed  right-4 top-20 rounded-xl p-2 w-[200px] flex items-center justify-center"
                 />
         </div>
         
