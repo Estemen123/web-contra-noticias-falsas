@@ -1,38 +1,25 @@
 "use-client";
-import { FormEvent , useEffect, useState } from "react";
+import { useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import dynamic from "next/dynamic";
-const ControlVoz = dynamic(() => import("@/components/voz/voz"), { ssr: false });
-
-
-
-
+import { useSearchForm } from "@/hook/useSearchForm";
+const ControlVoz = dynamic(() => import("@/components/voz/voz"), {
+    ssr: false,
+});
 
 type SearchFormProps = {
     setRespondido: React.Dispatch<React.SetStateAction<boolean>>;
-}
-const SearchForm = ({setRespondido}:{setRespondido: React.Dispatch<React.SetStateAction<boolean>>}) => {
-const [value, setValue] = useState("");
-  const [listening, setListening] = useState(false);
-    
-    const handlerSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        const mesage: string = String(formData.get("mensage")) ?? "";
-        try {
-            const res = await fetch("/api/gemini", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ mesage }),
-            });
-            const data = await res.json();
-            setRespondido(true);
-            console.log(data.text);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+};
+const SearchForm = ({
+    setRespondido,
+}: {
+    setRespondido: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+    const [value, setValue] = useState("");
+    const [listening, setListening] = useState(false);
+    const {handlerSubmit} = useSearchForm({setRespondido});
+
     return (
         <div className="p-6 rounded-2xl w-full max-w-5xl mx-auto">
             <form onSubmit={handlerSubmit} className="p-6">
@@ -44,7 +31,6 @@ const [value, setValue] = useState("");
                             placeholder="Escribe tu noticia..."
                             value={value}
                             onChange={(e) => setValue(e.target.value)}
-                            
                         />
                         <ControlVoz
                             language="es-ES"
@@ -60,7 +46,10 @@ const [value, setValue] = useState("");
                             variant="default"
                             className="bg-gradient-to-r from-[#54B7A1] to-[#7B8AFF] hover:from-[#429c87] hover:to-[#5a6eea] text-white text-base px-8 py-3 rounded-xl font-bold shadow-lg transition-all duration-200 flex items-center gap-2"
                         >
-                            <span className="tracking-wide drop-shadow"> Evaluar noticia</span>
+                            <span className="tracking-wide drop-shadow">
+                                {" "}
+                                Evaluar noticia
+                            </span>
                         </Button>
                     </div>
                 </div>
