@@ -14,7 +14,7 @@ declare module "react-speech-recognition" {
   export interface UseSpeechRecognitionOptions {
     commands?: Array<{
       command: string | string[];
-      callback: (...args: any[]) => void;
+      callback: (...args: unknown[]) => void;
       matchInterim?: boolean;
       isFuzzyMatch?: boolean;
       fuzzyMatchingThreshold?: number;

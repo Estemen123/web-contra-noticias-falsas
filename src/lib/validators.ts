@@ -5,33 +5,36 @@ type NewsResult = {
     argument: string;
 };
 
-function validateNewsResult(obj: any): obj is NewsResult {
-    if (!obj) return false;
+function validateNewsResult(obj: unknown): obj is NewsResult {
+  if (typeof obj !== "object" || obj === null) return false;
 
-    // Verificar que existen las claves
-    const requiredKeys: (keyof NewsResult)[] = [
-        "summary",
-        "title",
-        "veracity",
-        "argument",
-    ];
-    for (const key of requiredKeys) {
-        if (!(key in obj)) return false;
-    }
+  const candidate = obj as Record<string, unknown>;
 
-    // Verificar valores
-    if (typeof obj.summary !== "string" || obj.summary.trim() === "")
-        return false;
-    if (typeof obj.title !== "string" || obj.title.trim() === "") return false;
-    if (typeof obj.argument !== "string" || obj.argument.trim() === "")
-        return false;
-    if (
-        typeof obj.veracity !== "number" ||
-        ![0, 25, 50, 75, 100].includes(obj.veracity)
-    )
-        return false;
+  // Verificar claves requeridas
+  const requiredKeys: (keyof NewsResult)[] = [
+    "summary",
+    "title",
+    "veracity",
+    "argument",
+  ];
+  for (const key of requiredKeys) {
+    if (!(key in candidate)) return false;
+  }
 
-    return true;
+  // Verificar valores
+  if (typeof candidate.summary !== "string" || candidate.summary.trim() === "")
+    return false;
+  if (typeof candidate.title !== "string" || candidate.title.trim() === "")
+    return false;
+  if (typeof candidate.argument !== "string" || candidate.argument.trim() === "")
+    return false;
+  if (
+    typeof candidate.veracity !== "number" ||
+    ![0, 25, 50, 75, 100].includes(candidate.veracity)
+  )
+    return false;
+
+  return true;
 }
 
 export {validateNewsResult};
