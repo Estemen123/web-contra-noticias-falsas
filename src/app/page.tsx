@@ -25,7 +25,11 @@ export default function Home() {
                 </div>
             </div>            
             <SearchForm setRespondido={setResultValid} setResultData={setResultData}/>
-            {resultValid && <Result resultData={resultData}/>}
+            {resultValid && (
+                <div className="w-full max-w-7xl mx-auto px-8 mt-12">
+                    <Result resultData={resultData}/>
+                </div>
+            )}
             {/* <Result/> */}
             {/* {respodido?<Result></Result>:<SearchForm setRespondido={setRespondido}/>} */}
             {!open && (

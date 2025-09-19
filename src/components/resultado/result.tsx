@@ -15,20 +15,21 @@ const Result = ({ resultData }: ResultProps) => {
     const {video} = useVideoElemtStore()
         const {setvideo} = useVideoElemtStore()
     return (
-        <div className="flex justify-center items-start mt-8" onMouseEnter={() =>{ if (video !== 0) setvideo(0);}}>
-            <div className="flex gap-12 w-full max-w-[90vw]">
+        <div className="flex justify-center items-start px-8" onMouseEnter={() =>{ if (video !== 0) setvideo(0);}}>
+            <div className="flex items-start gap-8 w-full max-w-6xl">
                 {resultData && (
                     <>
-                        <VeracidadCard
-                            veracidad={resultData.veracity}
-                            votos={resultData.veracity}
-                        />
-                        <ResultCard resultData={resultData} />
+                        <div className="flex-shrink-0">
+                            <VeracidadCard
+                                veracidad={resultData.veracity}
+                                votos={resultData.veracity}
+                            />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <ResultCard resultData={resultData} />
+                        </div>
                     </>
                 )}
-
-                {/* Para el resultado y explicación */}
-                
             </div>
         </div>
     );
