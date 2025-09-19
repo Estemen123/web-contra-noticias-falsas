@@ -1,24 +1,39 @@
+import { useEffect, useState } from "react";
 import { useResultCard } from "@/hook/useResultCard";
 
-type ResultCardProps = {
+interface ResultCardProps {
     resultData: {
         title: string;
         summary: string;
         veracity: number;
         argument: string;
     };
-};
+}
 
 const ResultCard = ({ resultData }: ResultCardProps) => {
     const { handleSpeak, leyendo, veracityText } = useResultCard({
         argument: resultData.argument,
     });
 
-    const referenceLinks = [
-        "https://www.ejemplo.com/noticia-fuente-1",
-        "https://www.ejemplo.com/verificacion-2",
-        "https://www.ejemplo.com/contexto-adicional-3",
-    ];
+    const [referenceLinks, setReferenceLinks] = useState<string[]>([]);
+
+    useEffect(() => {
+        const fetchLinks = async () => {
+            try {
+                const res = await fetch("/api/scrape", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ query: resultData.title || resultData.summary }),
+                });
+                const data = await res.json();
+                setReferenceLinks(data.links || []);
+            } catch (err) {
+                console.error("Error al buscar enlaces:", err);
+            }
+        };
+
+        fetchLinks();
+    }, [resultData.title, resultData.summary]);
 
     const isLowVeracity = resultData.veracity <= 50;
     const textColorClass = isLowVeracity ? "text-red-500" : "text-[#54B7A1]";
