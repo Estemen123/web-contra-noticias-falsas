@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import { useSearchForm } from "@/hook/useSearchForm";
 import { Textarea } from "../ui/textarea";
 import { useVideoElemtStore } from "@/store/signsStore";
+
 const ControlVoz = dynamic(() => import("@/components/voz/voz"), {
     ssr: false,
 });
@@ -21,6 +22,7 @@ type SearchFormProps = {
         } | null>
     >;
 };
+
 const SearchForm = ({ setRespondido, setResultData }: SearchFormProps) => {
     const [value, setValue] = useState("");
     const [listening, setListening] = useState(false);
@@ -29,9 +31,9 @@ const SearchForm = ({ setRespondido, setResultData }: SearchFormProps) => {
         setRespondido,
         setResultData,
     });
-    
-        const {video} = useVideoElemtStore()
-        const {setvideo} = useVideoElemtStore()
+
+    const { video } = useVideoElemtStore();
+    const { setvideo } = useVideoElemtStore();
 
     const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -46,31 +48,58 @@ const SearchForm = ({ setRespondido, setResultData }: SearchFormProps) => {
     };
 
     return (
-        <div className="p-6 rounded-2xl w-full max-w-5xl mx-auto" >
+        <div className="p-6 rounded-2xl w-full max-w-5xl mx-auto">
             <form onSubmit={handleFormSubmit} className="p-6">
                 <div className="grid gap-3">
-                    <div>
-                        <Button type="button" onClick={() => setUrlInput(true)} className="" onMouseEnter={() =>{ if (video !== 2) setvideo(2);}}>
+                    {/* Botones de URL y TEXTO */}
+                    <div className="flex justify-center mb-4">
+                        <Button
+                            type="button"
+                            onClick={() => setUrlInput(true)}
+                            className={`px-6 py-2 rounded-l-full ${
+                                urlInput ? "bg-[#7B8AFF] text-white" : "bg-[#23253A] text-[#7B8AFF]"
+                            }`}
+                            onMouseEnter={() => {
+                                if (video !== 2) setvideo(2);
+                            }}
+                        >
                             URL
                         </Button>
-                        <Button type="button" onClick={() => setUrlInput(false)} className="" onMouseEnter={() =>{ if (video !== 3) setvideo(3);}}>
+                        <Button
+                            type="button"
+                            onClick={() => setUrlInput(false)}
+                            className={`px-6 py-2 rounded-r-full ${
+                                !urlInput ? "bg-[#7B8AFF] text-white" : "bg-[#23253A] text-[#7B8AFF]"
+                            }`}
+                            onMouseEnter={() => {
+                                if (video !== 3) setvideo(3);
+                            }}
+                        >
                             TEXTO
                         </Button>
                     </div>
+
+                    {/* Input o Textarea según la selección */}
                     {urlInput ? (
                         <div className="relative">
-                            <Input onMouseEnter={() =>{ if (video !== 2) setvideo(2);}}
+                            <Input
+                                onMouseEnter={() => {
+                                    if (video !== 2) setvideo(2);
+                                }}
                                 name="url"
-                                className="w-full h-10 bg-[#23253A] border border-[#7B8AFF] text-white pl-4 pr-4 py-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7B8AFF] placeholder:text-[#7B8AFF] text-lg "
+                                className="w-full h-10 bg-[#23253A] border border-[#7B8AFF] text-white pl-4 pr-4 py-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7B8AFF] placeholder:text-[#7B8AFF] text-lg"
                                 placeholder="Escribe el link de tu noticia..."
                             />
                         </div>
                     ) : (
                         <div className="relative">
-                            <Textarea onMouseEnter={() =>{ if (video !== 3) setvideo(3);}}
+                            <Textarea
+                                onMouseEnter={() => {
+                                    if (video !== 3) setvideo(3);
+                                }}
                                 name="texto"
                                 value={value}
-                                className="resize-none  bg-[#23253A] border border-[#7B8AFF] text-white pl-4 pr-4 py-6 rounded-lg   placeholder:text-[#7B8AFF] text-lg "
+                                className="resize-none bg-[#23253A] border border-[#7B8AFF] text-white pl-4 pr-4 py-6 rounded-lg placeholder:text-[#7B8AFF] text-lg"
                                 onChange={(e) => setValue(e.target.value)}
                                 placeholder="Escribe tu noticia ..."
                             ></Textarea>
@@ -80,10 +109,12 @@ const SearchForm = ({ setRespondido, setResultData }: SearchFormProps) => {
                                 continuous
                                 onTranscriptChange={setValue}
                                 onListeningChange={setListening}
-                                className="absolute  right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring"
+                                className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring"
                             />
                         </div>
                     )}
+
+                    {/* Botón de Evaluar */}
                     <div className="flex justify-center mt-4">
                         <Button
                             type="submit"
@@ -93,14 +124,41 @@ const SearchForm = ({ setRespondido, setResultData }: SearchFormProps) => {
                         >
                             {isLoading ? (
                                 <>
-                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    <svg
+                                        className="animate-spin -ml-1 mr-3 h-5 w-5"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <circle
+                                            className="opacity-25"
+                                            cx="12"
+                                            cy="12"
+                                            r="10"
+                                            stroke="currentColor"
+                                            strokeWidth="4"
+                                        ></circle>
+                                        <path
+                                            className="opacity-75"
+                                            fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                        ></path>
                                     </svg>
-                                    <span onMouseEnter={() =>{ if (video !== 5) setvideo(5);}}>Evaluando...</span>
+                                    <span
+                                        onMouseEnter={() => {
+                                            if (video !== 5) setvideo(5);
+                                        }}
+                                    >
+                                        Evaluando...
+                                    </span>
                                 </>
                             ) : (
-                                <span className="tracking-wide drop-shadow" onMouseEnter={() =>{ if (video !== 4) setvideo(4);}}>
+                                <span
+                                    className="tracking-wide drop-shadow"
+                                    onMouseEnter={() => {
+                                        if (video !== 4) setvideo(4);
+                                    }}
+                                >
                                     Evaluar noticia
                                 </span>
                             )}
